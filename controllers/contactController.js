@@ -9,9 +9,16 @@ const getContacts = (req, res) => {
 //@route POST /api/contacts
 //@access public
 
-const createContact = (req, res) => {
-    console.log("the request body is ", req.body); // this will log the request body in the console
-    res.status(201).json({ message: 'Create  contacts  ' });
+const createContact = (req, res, next) => {
+    console.log("the request body is ", req.body);
+    const { name, email, phone } = req.body;
+    if (!name || !email || !phone) {
+        const error = new Error('Please add all fields');
+        res.status(400);
+        next(error);
+        return;
+    }
+    res.status(201).json({ message: 'Create contacts' });
 };
 
 
