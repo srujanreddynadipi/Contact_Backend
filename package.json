@@ -1,0 +1,28 @@
+{
+  "name": "mycontacts-backend-api",
+  "version": "1.0.0",
+  "description": "this is express for my contact backend api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srujanreddynadipi/Contact_Backend.git"
+  },
+  "author": "srujan reddy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/srujanreddynadipi/Contact_Backend/issues"
+  },
+  "homepage": "https://github.com/srujanreddynadipi/Contact_Backend#readme",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
