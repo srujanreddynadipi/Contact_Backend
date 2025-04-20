@@ -4,16 +4,16 @@ const Contact = require('../models/contactModel'); // importing the contact mode
 
 //@desc Get all contacts
 //@route GET /api/contacts
-//@access public
+//@access private
 const getContacts = asyncHandler(async (req, res) => {
-    const contacts = await Contact.find(); // Fetch all contacts from the database
+    const contacts = await Contact.find({user_id:req.user.id}); // Fetch all contacts from the database
     res.status(200).json(contacts);
 });
 
 
 //@desc Create new  contacts
 //@route POST /api/contacts
-//@access public
+//@access private
 const createContact = asyncHandler(async (req, res, next) => {
     console.log("the request body is ", req.body);
     const { name, email, phone } = req.body;
@@ -26,7 +26,8 @@ const createContact = asyncHandler(async (req, res, next) => {
     const contact = await Contact.create({
         name,
         email,
-        phone
+        phone,
+        user_id: req.user.id, // Associate the contact with the logged-in user
     });
     res.status(201).json(contact);
 });
@@ -34,7 +35,7 @@ const createContact = asyncHandler(async (req, res, next) => {
 
 //@desc Get contacts
 //@route GET /api/contacts/:id
-//@access public
+//@access private
 
 const getContact = asyncHandler(async (req, res) => {
     const contact = await Contact.findById(req.params.id); // Fetch contact by ID from the database
@@ -47,13 +48,19 @@ const getContact = asyncHandler(async (req, res) => {
 
 //@desc Update contacts
 //@route PUT /api/contacts/:id
-//@access public
+//@access private
 const updateContact = asyncHandler(async (req, res) => {
     const contacts = await Contact.findById(req.params.id); // Fetch contact by ID from the database
     if (!contacts) {
         res.status(404);
         throw new Error('Contact not found');
     }
+
+    if(contacts.user_id.toString() !== req.user.id) { // Check if the logged-in user is the owner of the contact
+        res.status(403); // Forbidden
+        throw new Error('You are not authorized to update this contact');
+    }
+    
     const updatedContact = await Contact.findByIdAndUpdate(
         req.params.id,
         req.body, {
@@ -66,7 +73,7 @@ const updateContact = asyncHandler(async (req, res) => {
 
 //@desc Delete contacts
 //@route Delete /api/contacts/:id
-//@access public
+//@access private
 
 const deleteContact = asyncHandler(async (req, res) => {
     const contact = await Contact.findById(req.params.id); // Fetch contact by ID from the database
@@ -74,6 +81,12 @@ const deleteContact = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error('Contact not found');
     }
+
+    if(contacts.user_id.toString() !== req.user.id) { // Check if the logged-in user is the owner of the contact
+        res.status(403); // Forbidden
+        throw new Error('You are not authorized to update this contact');
+    }
+    
     await Contact.findByIdAndDelete(req.params.id);// Correctly delete the specific contact
     res.status(200).json({ message: `Contact with id ${req.params.id} deleted successfully` });
 });
