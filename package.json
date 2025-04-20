@@ -19,8 +19,11 @@
   },
   "homepage": "https://github.com/srujanreddynadipi/Contact_Backend#readme",
   "dependencies": {
+    "colors": "^1.4.0",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^8.13.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
