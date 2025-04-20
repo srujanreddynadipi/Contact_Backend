@@ -20,6 +20,7 @@ const createContact = (req, res, next) => {
 };
 
 app.use('/api/contacts', require('./routes/contactRoutes'));  // this is the middleware for the server
+app.use('/api/users', require('./routes/userRoutes'));  // this is the middleware for the server
 app.use(errorHandler);
 
 app.listen(port, () => {
